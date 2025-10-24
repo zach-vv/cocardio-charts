@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoCardio Business Fundamentals</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: transparent;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        .header {
+            display: none;
+        }
+        
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .chart-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(139, 0, 0, 0.12);
+        }
+        
+        .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .canvas-wrapper {
+            position: relative;
+            height: 300px;
+        }
+        
+        .metrics-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+        
+        .metric-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border-top: 3px solid #8B0000;
+            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.1);
+        }
+        
+        .metric-label {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .metric-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #8B0000;
+            margin-bottom: 5px;
+        }
+        
+        .metric-subtext {
+            font-size: 10px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>CoCardio Has Strong Business Fundamentals</h1>
+            <p>Proven unit economics and sustainable margins from real patient data</p>
+        </div>
+        
+        <div class="main-grid">
+            <div class="chart-card">
+                <div class="chart-title">Patient Unit Economics</div>
+                <div class="canvas-wrapper">
+                    <canvas id="economicsChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <div class="chart-title">Revenue Breakdown per Patient</div>
+                <div class="canvas-wrapper">
+                    <canvas id="revenueBreakdownChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="metrics-row">
+            <div class="metric-card">
+                <div class="metric-label">Gross Margin</div>
+                <div class="metric-value">61%</div>
+                <div class="metric-subtext">Highly profitable model</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Patient LTV</div>
+                <div class="metric-value">$9.5K</div>
+                <div class="metric-subtext">Strong retention value</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Total Revenue</div>
+                <div class="metric-value">$270K</div>
+                <div class="metric-subtext">18 months, 1 clinic</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Patients Served</div>
+                <div class="metric-value">100+</div>
+                <div class="metric-subtext">Proven demand</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Patient Unit Economics Chart
+        const economicsCtx = document.getElementById('economicsChart').getContext('2d');
+        const economicsChart = new Chart(economicsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Revenue per Patient', 'Total Costs', 'Gross Profit', 'Patient LTV'],
+                datasets: [{
+                    label: 'Amount ($)',
+                    data: [8750, 3373, 5377, 9500],
+                    backgroundColor: [
+                        'rgba(139, 0, 0, 0.85)',
+                        'rgba(244, 164, 164, 0.85)',
+                        'rgba(16, 185, 129, 0.85)',
+                        'rgba(139, 0, 0, 1)'
+                    ],
+                    borderColor: [
+                        'rgba(139, 0, 0, 1)',
+                        'rgba(244, 164, 164, 1)',
+                        'rgba(16, 185, 129, 1)',
+                        'rgba(139, 0, 0, 1)'
+                    ],
+                    borderWidth: 2,
+                    borderRadius: 10,
+                    borderSkipped: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return '$' + context.parsed.y.toLocaleString();
+                            }
+                        },
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        padding: 12,
+                        titleFont: {
+                            size: 13
+                        },
+                        bodyFont: {
+                            size: 15,
+                            weight: 'bold'
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + (value / 1000) + 'k';
+                            },
+                            font: {
+                                size: 11
+                            },
+                            color: '#666'
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 10,
+                                weight: '600'
+                            },
+                            color: '#2c3e50',
+                            maxRotation: 45,
+                            minRotation: 45
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Revenue Breakdown Donut Chart
+        const revenueCtx = document.getElementById('revenueBreakdownChart').getContext('2d');
+        const revenueChart = new Chart(revenueCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Gross Profit (61%)', 'Operating Costs (39%)'],
+                datasets: [{
+                    data: [61, 39],
+                    backgroundColor: [
+                        'rgba(139, 0, 0, 0.85)',
+                        'rgba(244, 164, 164, 0.85)'
+                    ],
+                    borderColor: [
+                        'rgba(139, 0, 0, 1)',
+                        'rgba(244, 164, 164, 1)'
+                    ],
+                    borderWidth: 2,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 15,
+                            padding: 15,
+                            font: {
+                                size: 12,
+                                weight: '600'
+                            },
+                            color: '#2c3e50'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed + '%';
+                            }
+                        },
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        padding: 12,
+                        titleFont: {
+                            size: 13
+                        },
+                        bodyFont: {
+                            size: 15,
+                            weight: 'bold'
+                        }
+                    }
+                },
+                cutout: '65%'
+            }
+        });
+        
+        Chart.register();
+    </script>
+</body>
+</html>
